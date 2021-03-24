@@ -1,3 +1,6 @@
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:english_words/english_words.dart';
@@ -6,9 +9,37 @@ import 'package:hello_world/state/manageBySelf.dart';
 import 'package:hello_world/state/manageByMixed.dart';
 import 'package:hello_world/list/scrollbarList.dart';
 import 'package:hello_world/list/separatorList.dart';
+import 'package:hello_world/infrastructure/error/error.dart';
 
 void main() {
-  runApp(MyApp());
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    reportErrorAndLog(details);
+    // Zone.current.handleUncaughtError(details.exception, details.stack);
+  };
+  ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
+    return Scaffold(
+      body: Container(
+        child: Center(
+          child: Text(
+            flutterErrorDetails.exceptionAsString(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.blue, fontSize: 14),
+          )
+        ),
+      ),
+    );
+  };
+  runZoned(
+    () => runApp(MyApp()),
+    zoneSpecification: new ZoneSpecification(
+      print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
+        collectLog(line);
+      }
+    ),
+    onError: (Object obj, StackTrace stack) {
+      var details = makeDetails(obj, stack);
+      reportErrorAndLog(details);
+  });
 }
 
 // class MyAnimationWidget extends AnimatedWidget {
@@ -152,7 +183,13 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('open new route'),
               textColor: Colors.blue,
               onPressed: () {
-                Navigator.pushNamed(context, 'letterList');
+                var a = ['1', '2'];
+                print(a[3]);
+                // var future = new Future.value(100);
+                // runZoned(() {
+                //   future.then((value) => throw 'error');
+                // });
+                // Navigator.pushNamed(context, 'letterList');
             })
           ],
         ),
