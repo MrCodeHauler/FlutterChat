@@ -10,11 +10,13 @@ import 'package:hello_world/state/manageByMixed.dart';
 import 'package:hello_world/list/scrollbarList.dart';
 import 'package:hello_world/list/separatorList.dart';
 import 'package:hello_world/infrastructure/error/error.dart';
+import 'package:hello_world/infrastructure/intl/demoLocalizations.dart';
 
 void main() {
-  FlutterError.onError = (FlutterErrorDetails details) async {
+  FlutterError.onError = (FlutterErrorDetails details) {
+    Zone.current.handleUncaughtError(details.exception, details.stack);
+    print('错误 -> $details');
     reportErrorAndLog(details);
-    // Zone.current.handleUncaughtError(details.exception, details.stack);
   };
   ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
     return Scaffold(
@@ -56,6 +58,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       initialRoute: '/',
+      // locale: Locale('en', 'US'),
+      locale: Locale('zh', 'CN'),
+      // 当前应用支持的locale列表
+      localizationsDelegates: [
+        DemoLocalizationsDelegate(),
+        // GlobalMaterialLocalizations.delegate,
+        // GlobalWidgetsLocalizations.delegate,
+      ],
+      onGenerateTitle: (context) {
+        return DemoLocalizations.of(context).title;
+      },
+      supportedLocales: [
+        Locale('en', 'US'), // 美国英语
+        Locale('zh', 'CN'), // 中文简体
+      ],
+      // local改变后的回调
+      // localeListResolutionCallback: ,
       routes: {
         "/": (context) => MyHomePage(title: 'Flutter Demo Home Page'),
         "new_page": (context) => NewRoute(),
@@ -170,11 +189,10 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
+           // 'You have pushed the button this many times: ' + wordPair.toString(),
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times: ' + wordPair.toString(),
-            ),
+            Text(DemoLocalizations.of(context).title),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
@@ -183,12 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('open new route'),
               textColor: Colors.blue,
               onPressed: () {
-                var a = ['1', '2'];
-                print(a[3]);
-                // var future = new Future.value(100);
-                // runZoned(() {
-                //   future.then((value) => throw 'error');
-                // });
+                // FlutterI18n.refresh(context, 'zh', {'CN'});
                 // Navigator.pushNamed(context, 'letterList');
             })
           ],
