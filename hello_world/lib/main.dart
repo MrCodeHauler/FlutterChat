@@ -1,6 +1,3 @@
-
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:english_words/english_words.dart';
@@ -9,39 +6,9 @@ import 'package:hello_world/state/manageBySelf.dart';
 import 'package:hello_world/state/manageByMixed.dart';
 import 'package:hello_world/list/scrollbarList.dart';
 import 'package:hello_world/list/separatorList.dart';
-import 'package:hello_world/infrastructure/error/error.dart';
-import 'package:hello_world/infrastructure/intl/demoLocalizations.dart';
 
 void main() {
-  FlutterError.onError = (FlutterErrorDetails details) {
-    Zone.current.handleUncaughtError(details.exception, details.stack);
-    print('错误 -> $details');
-    reportErrorAndLog(details);
-  };
-  ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
-    return Scaffold(
-      body: Container(
-        child: Center(
-          child: Text(
-            flutterErrorDetails.exceptionAsString(),
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.blue, fontSize: 14),
-          )
-        ),
-      ),
-    );
-  };
-  runZoned(
-    () => runApp(MyApp()),
-    zoneSpecification: new ZoneSpecification(
-      print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
-        collectLog(line);
-      }
-    ),
-    onError: (Object obj, StackTrace stack) {
-      var details = makeDetails(obj, stack);
-      reportErrorAndLog(details);
-  });
+  runApp(MyApp());
 }
 
 // class MyAnimationWidget extends AnimatedWidget {
@@ -58,23 +25,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       initialRoute: '/',
-      // locale: Locale('en', 'US'),
-      locale: Locale('zh', 'CN'),
-      // 当前应用支持的locale列表
-      localizationsDelegates: [
-        DemoLocalizationsDelegate(),
-        // GlobalMaterialLocalizations.delegate,
-        // GlobalWidgetsLocalizations.delegate,
-      ],
-      onGenerateTitle: (context) {
-        return DemoLocalizations.of(context).title;
-      },
-      supportedLocales: [
-        Locale('en', 'US'), // 美国英语
-        Locale('zh', 'CN'), // 中文简体
-      ],
-      // local改变后的回调
-      // localeListResolutionCallback: ,
       routes: {
         "/": (context) => MyHomePage(title: 'Flutter Demo Home Page'),
         "new_page": (context) => NewRoute(),
@@ -136,6 +86,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int _selectedIndex = 1;
 
   void _incrementCounter() {
     setState(() {
@@ -167,9 +118,24 @@ class _MyHomePageState extends State<MyHomePage> {
     // debugger(when: 40 > 30, message: '是否正确');
     return Scaffold(
       appBar: AppBar(
+        // 导航栏
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.share))
+        ],
+      ),
+      // drawer: new MyDrawer(),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
+          BottomNavigationBarItem(label: 'Business', icon: Icon(Icons.business)),
+          BottomNavigationBarItem(label: 'School', icon: Icon(Icons.school)),
+        ],
+        currentIndex: _selectedIndex,
+        fixedColor: Colors.blue,
+        onTap: _onItemTapped,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -189,10 +155,11 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-           // 'You have pushed the button this many times: ' + wordPair.toString(),
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(DemoLocalizations.of(context).title),
+            Text(
+              'You have pushed the button this many times: ' + wordPair.toString(),
+            ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
@@ -201,8 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('open new route'),
               textColor: Colors.blue,
               onPressed: () {
-                // FlutterI18n.refresh(context, 'zh', {'CN'});
-                // Navigator.pushNamed(context, 'letterList');
+                Navigator.pushNamed(context, 'letterList');
             })
           ],
         ),
@@ -213,6 +179,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
