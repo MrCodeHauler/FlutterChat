@@ -6,6 +6,7 @@ import 'package:hello_world/state/manageBySelf.dart';
 import 'package:hello_world/state/manageByMixed.dart';
 import 'package:hello_world/list/scrollbarList.dart';
 import 'package:hello_world/list/separatorList.dart';
+import 'drawer.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       initialRoute: '/',
       routes: {
-        "/": (context) => MyHomePage(title: 'Flutter Demo Home Page'),
+        "/": (context) => MyHomePage(title: 'Flutter'),
         "new_page": (context) => NewRoute(),
         "manageBySelf": (context) => TapboxA(),
         "manageByParent": (context) => ParentWidget(),
@@ -64,7 +65,6 @@ class NewRoute extends StatelessWidget {
     );
   }
 }
-
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -122,15 +122,24 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.share))
-        ],
+        centerTitle: false,
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.share))],
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.dashboard, color: Colors.white),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          );
+        }),
       ),
-      // drawer: new MyDrawer(),
+      drawer: new LeftDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
-          BottomNavigationBarItem(label: 'Business', icon: Icon(Icons.business)),
+          BottomNavigationBarItem(
+              label: 'Business', icon: Icon(Icons.business)),
           BottomNavigationBarItem(label: 'School', icon: Icon(Icons.school)),
         ],
         currentIndex: _selectedIndex,
@@ -158,18 +167,19 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times: ' + wordPair.toString(),
+              'You have pushed the button this many times: ' +
+                  wordPair.toString(),
             ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
             FlatButton(
-              child: Text('open new route'),
-              textColor: Colors.blue,
-              onPressed: () {
-                Navigator.pushNamed(context, 'letterList');
-            })
+                child: Text('open new route'),
+                textColor: Colors.blue,
+                onPressed: () {
+                  Navigator.pushNamed(context, 'letterList');
+                })
           ],
         ),
       ),
