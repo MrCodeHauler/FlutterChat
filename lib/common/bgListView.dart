@@ -12,23 +12,22 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 typedef BGListViewFunction = Future Function();
 
 class BGListView extends StatefulWidget {
-
   final List listData; // 列表数据
   final Widget Function(BuildContext, int) itemBuilder; // 单个样式
-  final BGListViewFunction onLoad;
-  final BGListViewFunction onRefresh;
+  final BGListViewFunction? onLoad;
+  final BGListViewFunction? onRefresh;
   final bool enablePulldown;
   final bool enablePullup;
 
   // 构造函数
-  const BGListView({
-    this.listData,
-    this.itemBuilder,
-    this.onLoad,
-    this.onRefresh,
-    this.enablePullup = false,
-    this.enablePulldown = false
-  }): super();
+  const BGListView(
+      {required this.listData,
+      required this.itemBuilder,
+      this.onLoad,
+      this.onRefresh,
+      this.enablePullup = false,
+      this.enablePulldown = false})
+      : super();
 
   @override
   State<StatefulWidget> createState() {
@@ -37,8 +36,8 @@ class BGListView extends StatefulWidget {
 }
 
 class _BGListViewState extends State<BGListView> {
-
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
@@ -46,26 +45,24 @@ class _BGListViewState extends State<BGListView> {
       enablePullDown: widget.enablePulldown,
       enablePullUp: widget.enablePullup,
       header: WaterDropHeader(),
-      footer: CustomFooter(
-        builder: (BuildContext context, LoadStatus mode) {
-          Widget body;
-          if (mode == LoadStatus.idle) {
-            body = Text("上拉加载");
-          } else if (mode == LoadStatus.loading) {
-            body = CupertinoActivityIndicator();
-          } else if (mode == LoadStatus.failed) {
-            body = Text("加载失败！点击重试!");
-          } else if (mode == LoadStatus.canLoading) {
-            body = Text("松手，加载更多!");
-          } else {
-            body = Text("没有更多数据了!");
-          }
-          return Container(
-            height: 55.0,
-            child: Center(child: body),
-          );
+      footer: CustomFooter(builder: (BuildContext context, LoadStatus mode) {
+        Widget body;
+        if (mode == LoadStatus.idle) {
+          body = Text("上拉加载");
+        } else if (mode == LoadStatus.loading) {
+          body = CupertinoActivityIndicator();
+        } else if (mode == LoadStatus.failed) {
+          body = Text("加载失败！点击重试!");
+        } else if (mode == LoadStatus.canLoading) {
+          body = Text("松手，加载更多!");
+        } else {
+          body = Text("没有更多数据了!");
         }
-      ),
+        return Container(
+          height: 55.0,
+          child: Center(child: body),
+        );
+      }),
       onRefresh: _onRefresh,
       onLoading: _onLoad,
       controller: _refreshController,
@@ -80,13 +77,13 @@ class _BGListViewState extends State<BGListView> {
 
   void _onRefresh() async {
     if (widget.onRefresh != null) {
-      await widget.onRefresh();
+      await widget.onRefresh!();
     }
   }
 
   void _onLoad() async {
     if (widget.onLoad != null) {
-      await widget.onLoad();
+      await widget.onLoad!();
     }
   }
 }

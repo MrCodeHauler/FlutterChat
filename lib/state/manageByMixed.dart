@@ -26,23 +26,20 @@ class _ParentWidgetCState extends State<ParentWidgetC> {
   }
 }
 
-
 // ---------------------- TapBoxC ----------------------
 
 class TapBoxC extends StatefulWidget {
-
   final bool active;
   final ValueChanged<bool> onChanged;
 
-  TapBoxC({Key key, this.active: false, @required this.onChanged}): super(key: key);
+  TapBoxC({Key? key, this.active: false, required this.onChanged})
+      : super(key: key);
 
   @override
   _TapBoxCState createState() => new _TapBoxCState();
 }
 
-
 class _TapBoxCState extends State<TapBoxC> {
-
   bool _highlight = false;
 
   void _hanldeTap() {
@@ -85,10 +82,11 @@ class _TapBoxCState extends State<TapBoxC> {
         height: 200.0,
         decoration: new BoxDecoration(
           color: widget.active ? Colors.lightGreen[700] : Colors.grey[600],
-          border: _highlight ? new Border.all(color: Colors.teal[700], width: 10.0) : null,
+          border: _highlight
+              ? new Border.all(color: Colors.white, width: 10.0)
+              : null,
         ),
       ),
     );
   }
 }
-

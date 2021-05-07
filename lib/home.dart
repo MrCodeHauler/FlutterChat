@@ -4,7 +4,7 @@ import 'package:hello_world/common/bgListView.dart';
 import 'drawer.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -54,35 +54,30 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onItemTapped,
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: BGListView(
-          entries,
-          (BuildContext context, int index) {
-            return ListTile(
-              leading: Icon(Icons.book), // 左边Icon
-              title: Text('Entry ${entries[index]}'),  // 主标题
-              trailing: Icon(Icons.arrow_right), // 右边Icon
-              onTap: didClickCell,
-            );
-          })
-      ),
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: BGListView(
+              listData: entries,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  leading: Icon(Icons.book), // 左边Icon
+                  title: Text('Entry ${entries[index]}'), // 主标题
+                  trailing: Icon(Icons.arrow_right), // 右边Icon
+                  onTap: didClickCell,
+                );
+              })),
     );
   }
 
   Widget buildItem(BuildContext context, int index) {
     return new GestureDetector(
-      child: new Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: new Text('Entry ${entries[index]}'),
-      )
-    );
-    
+        child: new Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: new Text('Entry ${entries[index]}'),
+    ));
   }
 
-  void didClickCell() {
-    
-  }
+  void didClickCell() {}
 
   void _onItemTapped(int index) {
     setState(() {

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 // ---------------------- ParentWidget ----------------------
 class ParentWidget extends StatefulWidget {
-
   @override
   _ParentWidgetState createState() => new _ParentWidgetState();
-
 }
 
 class _ParentWidgetState extends State<ParentWidget> {
@@ -20,18 +18,18 @@ class _ParentWidgetState extends State<ParentWidget> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      child: new TapboxB(
-        active: _active,
-        onChanged: _handleTapboxChanged,
-      )
-    );
+        child: new TapboxB(
+      active: _active,
+      onChanged: _handleTapboxChanged,
+    ));
   }
 }
 
 // ---------------------- TapboxB ----------------------
 
 class TapboxB extends StatelessWidget {
-  TapboxB({Key key, this.active: false, @required this.onChanged}): super(key: key);
+  TapboxB({Key? key, this.active: false, required this.onChanged})
+      : super(key: key);
 
   final bool active;
   final ValueChanged<bool> onChanged;
