@@ -14,7 +14,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 1;
-  final List<String> entries = <String>['牌杀小游戏', 'AppBar的使用', 'C'];
+  final List<String> entries = <String>['牌杀小游戏', 'AppBar的使用', '布局'];
 
   @override
   void initState() {

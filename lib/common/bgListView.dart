@@ -45,7 +45,7 @@ class _BGListViewState extends State<BGListView> {
       enablePullDown: widget.enablePulldown,
       enablePullUp: widget.enablePullup,
       header: WaterDropHeader(),
-      footer: CustomFooter(builder: (BuildContext context, LoadStatus mode) {
+      footer: CustomFooter(builder: (BuildContext context, LoadStatus? mode) {
         Widget body;
         if (mode == LoadStatus.idle) {
           body = Text("上拉加载");
