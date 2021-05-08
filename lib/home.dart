@@ -14,7 +14,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 1;
-  final List<String> entries = <String>['牌杀小游戏', 'AppBar的使用', '布局'];
+  final List<String> entries = <String>[
+    '牌杀小游戏',
+    'Layout',
+    'ReorderableListView'
+    'ListView',
+    'ImagePicker',
+    'Loading',
+    'Dialog',
+    'DateImagePicker',
+    'Toast',
+    'TextField'
+  ];
 
   @override
   void initState() {
@@ -44,28 +55,28 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: new LeftDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
+          BottomNavigationBarItem(label: 'School', icon: Icon(Icons.school)),
           BottomNavigationBarItem(
               label: 'Business', icon: Icon(Icons.business)),
-          BottomNavigationBarItem(label: 'School', icon: Icon(Icons.school)),
+          BottomNavigationBarItem(label: 'Me', icon: Icon(Icons.verified_user)),
         ],
         currentIndex: _selectedIndex,
         fixedColor: Colors.blue,
         onTap: _onItemTapped,
       ),
       body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: BGListView(
-              listData: entries,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: Icon(Icons.book), // 左边Icon
-                  title: Text('Entry ${entries[index]}'), // 主标题
-                  trailing: Icon(Icons.arrow_right), // 右边Icon
-                  onTap: didClickCell,
-                );
-              })),
+        child: BGListView(
+          listData: entries,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              leading: Icon(Icons.book), // 左边Icon
+              title: Text('Entry ${entries[index]}'), // 主标题
+              trailing: Icon(Icons.arrow_right), // 右边Icon
+            );
+          },
+          didClickItem: didClickItem
+        )
+      ),
     );
   }
 
@@ -77,7 +88,23 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
   }
 
-  void didClickCell() {}
+  void didClickItem(int index) {
+    switch (index) {
+      case 0:
+        // 牌杀小游戏
+        Navigator.pushNamed(context, 'miniGame');
+        break;
+      case 1:
+        // Layout
+        Navigator.pushNamed(context, 'separatorList');
+        break;
+      case 2:
+        // TestReorderableListView
+        Navigator.pushNamed(context, 'TestReorderableListView');
+        break;
+      default:
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {

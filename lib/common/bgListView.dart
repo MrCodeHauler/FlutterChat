@@ -14,6 +14,7 @@ typedef BGListViewFunction = Future Function();
 class BGListView extends StatefulWidget {
   final List listData; // 列表数据
   final Widget Function(BuildContext, int) itemBuilder; // 单个样式
+  final void Function(int)? didClickItem; // 点击某个样式 
   final BGListViewFunction? onLoad;
   final BGListViewFunction? onRefresh;
   final bool enablePulldown;
@@ -25,6 +26,7 @@ class BGListView extends StatefulWidget {
       required this.itemBuilder,
       this.onLoad,
       this.onRefresh,
+      this.didClickItem,
       this.enablePullup = false,
       this.enablePulldown = false})
       : super();
@@ -68,10 +70,23 @@ class _BGListViewState extends State<BGListView> {
       controller: _refreshController,
       child: ListView.separated(
         padding: const EdgeInsets.all(8),
-        itemBuilder: widget.itemBuilder,
+        itemBuilder: (BuildContext context, int index) {
+          return buildItem(context, index);
+        },
         separatorBuilder: (BuildContext context, int index) => const Divider(),
         itemCount: widget.listData.length,
       ),
+    );
+  }
+
+  Widget buildItem(BuildContext context, int index) {
+    return GestureDetector(
+      child: widget.itemBuilder(context, index),
+      onTap: () {
+        if (widget.didClickItem != null) {
+          widget.didClickItem!(index);
+        }
+      },
     );
   }
 
