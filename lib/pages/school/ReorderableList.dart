@@ -2,7 +2,13 @@
 
 import 'package:flutter/material.dart';
 class TestReorderableListView extends StatefulWidget {
-  const TestReorderableListView({Key? key}) : super(key: key);
+
+  final Axis scrollDirection;
+
+  const TestReorderableListView({
+    Key? key,
+    this.scrollDirection = Axis.horizontal,
+  }) : super(key: key);
 
   @override
   _TestReorderableListViewState createState() => _TestReorderableListViewState();
@@ -19,11 +25,13 @@ class _TestReorderableListViewState extends State<TestReorderableListView> {
         title: Text('TestReorderableListView'),
       ),
       body: ReorderableListView(
+        scrollDirection: widget.scrollDirection,
         padding: const EdgeInsets.symmetric(horizontal: 40),
         children: _items.map((item) => Dismissible(
           key: Key(item.toString()),
           child: Container(
-            height: 100,
+            // height: 100,
+            width: 100,
             margin: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             decoration: BoxDecoration(
               color: Colors.primaries[item % Colors.primaries.length],

@@ -15,6 +15,7 @@ class BGListView extends StatefulWidget {
   final List listData; // 列表数据
   final Widget Function(BuildContext, int) itemBuilder; // 单个样式
   final void Function(int)? didClickItem; // 点击某个样式 
+  final Axis scrollDirection; // 滚动方向
   final BGListViewFunction? onLoad;
   final BGListViewFunction? onRefresh;
   final bool enablePulldown;
@@ -27,6 +28,7 @@ class BGListView extends StatefulWidget {
       this.onLoad,
       this.onRefresh,
       this.didClickItem,
+      this.scrollDirection = Axis.vertical,
       this.enablePullup = false,
       this.enablePulldown = false})
       : super();
@@ -69,10 +71,10 @@ class _BGListViewState extends State<BGListView> {
       onLoading: _onLoad,
       controller: _refreshController,
       child: ListView.separated(
-        padding: const EdgeInsets.all(8),
         itemBuilder: (BuildContext context, int index) {
           return buildItem(context, index);
         },
+        scrollDirection: widget.scrollDirection,
         separatorBuilder: (BuildContext context, int index) => const Divider(),
         itemCount: widget.listData.length,
       ),
