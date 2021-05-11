@@ -12,7 +12,7 @@ class AlignLayoutDemo extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Align(
-            alignment: FractionalOffset(0.5, 0.5),
+            alignment: FractionalOffset(0.5, 0.5), // 
             child: Image.asset(
               'images/1.jpg',
               width: 120,

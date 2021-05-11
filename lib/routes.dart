@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hello_world/home.dart';
 import 'package:hello_world/pages/school/ReorderableList.dart';
+import 'package:hello_world/pages/school/buttonDemo.dart';
 import 'package:hello_world/pages/school/layout/alignLayoutPage.dart';
 import 'package:hello_world/pages/school/layout/centerLayoutPage.dart';
 import 'package:hello_world/pages/school/layoutListPage.dart';
@@ -31,6 +32,8 @@ class BGRoute {
     "CenterLayoutDemo": (context) => CenterLayoutDemo(),
     // "PaddingLayoutPage": (context) =>
     "AlignLayoutDemo": (context) => AlignLayoutDemo(),
+    // button
+    "ButtonDemo": (context) => ButtonDemo(),
   };
 }
 

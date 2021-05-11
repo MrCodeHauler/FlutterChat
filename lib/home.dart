@@ -19,6 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
     'Layout',
     'ReorderableListView'
     'ListView',
+    'Button',
     'ImagePicker',
     'Loading',
     'Dialog',
@@ -101,6 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
       case 2:
         // TestReorderableListView
         Navigator.pushNamed(context, 'TestReorderableListView');
+        break;
+      case 3:
+        // button
+        Navigator.pushNamed(context, 'TestButtonPage');
         break;
       default:
     }
