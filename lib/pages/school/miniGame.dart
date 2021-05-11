@@ -11,11 +11,14 @@ class MiniGame extends StatefulWidget {
 }
 
 class _MiniGameState extends State<MiniGame> {
-  List<int> _items = List<int>.generate(5, (int index) => index);
+  List<int> _items = List<int>.generate(2, (int index) => index);
   double _currentSliderValue = 20;
   
   @override
   Widget build(BuildContext context) {
+
+    int cardwidth = 100;
+
     return Scaffold(
       appBar: AppBar(title: Text('牌杀小游戏')),
       body: Center(
@@ -31,7 +34,7 @@ class _MiniGameState extends State<MiniGame> {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(top: 20),
-                        child: Text('预设五张牌的顺序，与对手进行竞猜，如果对应顺序的牌大于对方，则计1，如果总计数大于对方则赢，如果小于则输，相等为平',
+                        child: Text('预设两张牌的顺序，与对手进行竞猜，如果对应顺序的牌大于对方，则计1，如果总计数大于对方则赢，如果小于则输，相等为平',
                           style: TextStyle(fontSize: 18),
                           textAlign: TextAlign.center,
                         ),
@@ -44,7 +47,7 @@ class _MiniGameState extends State<MiniGame> {
                         ),
                       ),
                       SizedBox(
-                        width: 600,
+                        width: ((cardwidth + 20) * _items.length).toDouble(),
                         height: 100,
                         child: BGListView(
                           scrollDirection: Axis.horizontal,
@@ -71,7 +74,7 @@ class _MiniGameState extends State<MiniGame> {
                       ),
                       Center(
                         child: SizedBox(
-                          width: 600,
+                          width: ((cardwidth + 20) * _items.length).toDouble(),
                           height: 100,
                           child: ReorderableListView(
                             scrollDirection: Axis.horizontal,
@@ -130,17 +133,6 @@ class _MiniGameState extends State<MiniGame> {
                 ],
               )
             ),
-            BGFlipCard(
-              direction: FlipDirection.Horizontal, // default
-              front: Container(
-                  child: Text('Front'),
-                  decoration: BoxDecoration(color: Colors.red),
-                ),
-                back: Container(
-                  child: Text('Back'),
-                  decoration: BoxDecoration(color: Colors.lightBlue),
-                ),
-            ),
             Padding(
               padding: EdgeInsets.only(bottom: 40),
               child: SizedBox(
@@ -157,6 +149,20 @@ class _MiniGameState extends State<MiniGame> {
           ],
         )
       )
+    );
+  }
+
+  Widget buildItem(BuildContext context, int index) {
+    return BGFlipCard(
+      direction: FlipDirection.Horizontal, // default
+      front: Container(
+          child: Text('Front'),
+          decoration: BoxDecoration(color: Colors.red),
+        ),
+        back: Container(
+          child: Text('Back'),
+          decoration: BoxDecoration(color: Colors.lightBlue),
+        ),
     );
   }
 }

@@ -81,14 +81,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget buildItem(BuildContext context, int index) {
-    return new GestureDetector(
-        child: new Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: new Text('Entry ${entries[index]}'),
-    ));
-  }
-
   void didClickItem(int index) {
     switch (index) {
       case 0:
