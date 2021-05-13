@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hello_world/common/bgListView.dart';
 import 'package:hello_world/common/bgSlider.dart';
 import 'package:hello_world/flipCard/bgFlipCard.dart';
+import 'package:hello_world/views/school/cardItem.dart';
 
 class MiniGame extends StatefulWidget {
   MiniGame({Key? key}): super(key: key);
@@ -12,13 +15,16 @@ class MiniGame extends StatefulWidget {
 
 class _MiniGameState extends State<MiniGame> {
   List<int> _items = List<int>.generate(2, (int index) => index);
+  
+  
   double _currentSliderValue = 20;
   
   @override
   Widget build(BuildContext context) {
 
     int cardwidth = 100;
-
+    List shuffleItems = this.shuffleList(_items);
+  
     return Scaffold(
       appBar: AppBar(title: Text('牌杀小游戏')),
       body: Center(
@@ -51,12 +57,12 @@ class _MiniGameState extends State<MiniGame> {
                         height: 100,
                         child: BGListView(
                           scrollDirection: Axis.horizontal,
-                          listData: _items,
+                          listData: shuffleItems,
                           itemBuilder: (BuildContext context, int index) {
-                            return Container(
+                            return MiniGameCard(
+                              enabledFlip: true,
                               key: Key(index.toString()),
-                              width: 100,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              item: shuffleItems[index].toString(),
                               decoration: BoxDecoration(
                                 color: Colors.primaries[index % Colors.primaries.length],
                                 borderRadius: BorderRadius.circular(10)
@@ -78,23 +84,15 @@ class _MiniGameState extends State<MiniGame> {
                           height: 100,
                           child: ReorderableListView(
                             scrollDirection: Axis.horizontal,
-                            children: _items.map((item) => Container(
+                            children: _items.map((item) => MiniGameCard(
                               key: Key(item.toString()),
-                              width: 100,
-                              height: 100,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              item: item.toString(),
                               decoration: BoxDecoration(
                                 color: Colors.primaries[item % Colors.primaries.length],
                                 borderRadius: BorderRadius.circular(10)
                               ),
-                              child: Center(
-                                child: Text(
-                                  item.toString(),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
-                                )
-                              )
-                            )).toList(),
+                            )
+                            ).toList(),
                             onReorder: (int oldIndex, int newIndex) { // 拖动完成的回调 (旧的索引，新的索引)
                               setState(() {
                                 if (oldIndex < newIndex) {
@@ -152,17 +150,10 @@ class _MiniGameState extends State<MiniGame> {
     );
   }
 
-  Widget buildItem(BuildContext context, int index) {
-    return BGFlipCard(
-      direction: FlipDirection.Horizontal, // default
-      front: Container(
-          child: Text('Front'),
-          decoration: BoxDecoration(color: Colors.red),
-        ),
-        back: Container(
-          child: Text('Back'),
-          decoration: BoxDecoration(color: Colors.lightBlue),
-        ),
-    );
+  List<dynamic> shuffleList(List<dynamic> list) {
+    List newList = [];
+    newList.addAll(list);
+    newList.shuffle();
+    return newList;
   }
 }
