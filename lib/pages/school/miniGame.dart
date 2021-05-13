@@ -1,9 +1,7 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hello_world/common/bgListView.dart';
 import 'package:hello_world/common/bgSlider.dart';
-import 'package:hello_world/flipCard/bgFlipCard.dart';
 import 'package:hello_world/views/school/cardItem.dart';
 
 class MiniGame extends StatefulWidget {
@@ -15,8 +13,7 @@ class MiniGame extends StatefulWidget {
 
 class _MiniGameState extends State<MiniGame> {
   List<int> _items = List<int>.generate(2, (int index) => index);
-  
-  
+ 
   double _currentSliderValue = 20;
   
   @override
