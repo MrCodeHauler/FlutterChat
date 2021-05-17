@@ -34,6 +34,8 @@ class BGRoute {
     "AlignLayoutDemo": (context) => AlignLayoutDemo(),
     // button
     "ButtonDemo": (context) => ButtonDemo(),
+    // Dialog
+    // "TestDialogPage": (context) => 
   };
 }
 

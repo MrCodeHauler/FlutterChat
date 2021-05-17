@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hello_world/common/bgBottomSheet.dart';
+import 'package:hello_world/common/bgDialog.dart';
 import 'package:hello_world/common/bgListView.dart';
 
 import 'drawer.dart';
@@ -20,9 +22,10 @@ class _MyHomePageState extends State<MyHomePage> {
     'ReorderableListView'
     'ListView',
     'Button',
+    'Dialog',
+    'BottomSheet'
     'ImagePicker',
     'Loading',
-    'Dialog',
     'DateImagePicker',
     'Toast',
     'TextField'
@@ -98,6 +101,25 @@ class _MyHomePageState extends State<MyHomePage> {
       case 3:
         // button
         Navigator.pushNamed(context, 'TestButtonPage');
+        break;
+      case 4:
+        // Dialog
+        BGDialog.showGlobalDialog(context);
+        // Navigator.pushNamed(context, 'TestDialogPage');
+        break;
+      case 5:
+        // BottomSheet
+        BGBottomSheet.showGlobalBottomSheet(
+          context: context, 
+          listData: entries,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              leading: Icon(Icons.book), // 左边Icon
+              title: Text('Entry ${entries[index]}'), // 主标题
+              trailing: Icon(Icons.arrow_right), // 右边Icon
+            );
+          }
+        );
         break;
       default:
     }
