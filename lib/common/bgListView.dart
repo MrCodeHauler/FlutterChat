@@ -95,12 +95,14 @@ class _BGListViewState extends State<BGListView> {
   void _onRefresh() async {
     if (widget.onRefresh != null) {
       await widget.onRefresh!();
+      _refreshController.refreshCompleted();
     }
   }
 
   void _onLoad() async {
     if (widget.onLoad != null) {
       await widget.onLoad!();
+      _refreshController.loadComplete();
     }
   }
 }
