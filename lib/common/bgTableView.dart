@@ -75,20 +75,15 @@ class FlutterTableView extends StatefulWidget {
 }
 
 class _FlutterTableViewState extends State<FlutterTableView> {
-  ////////////////////////////////////////////////////////////////////
-  //                          variables
-  ////////////////////////////////////////////////////////////////////
-  SectionHeaderModel? currentHeaderModel;
-  int totalItemCount = 0;
-  List<SectionHeaderModel> sectionHeaderList = List();
-  List<int> sectionTotalWidgetCountList = List();
-  ScrollController scrollController = new ScrollController();
+  SectionHeaderModel? currentHeaderModel; // 当前展示的组头
+  int totalItemCount = 0; // 组头、组尾、Cell组件总数
+  List<SectionHeaderModel> sectionHeaderList = []; // section 模型
+  List<int> sectionTotalWidgetCountList = [];  // 每个section具有的raw数目 包括 section 
+  ScrollController scrollController = new ScrollController(); // 用于监听的Controller
   late ListView listView;
   bool insideSetStateFlag = false;
 
-  ////////////////////////////////////////////////////////////////////
-  //                         init function
-  ////////////////////////////////////////////////////////////////////
+  // 初始化数据
   void _initBaseData() {
     this.totalItemCount = 0;
     this.sectionHeaderList.clear();
@@ -97,10 +92,11 @@ class _FlutterTableViewState extends State<FlutterTableView> {
     double offsetY = 0;
     for (int section = 0; section < widget.sectionCount; section++) {
       int rowCount = widget.rowCountAtSection(section);
-      Widget? sectionHeader;
+      Widget sectionHeader = Container();
       double sectionHeight;
       if (widget.sectionHeaderBuilder != null) {
         sectionHeight = widget.sectionHeaderHeight(context, section);
+        sectionHeader = widget.sectionHeaderBuilder!(context, section);
       } else {
         sectionHeight = 0;
       }
@@ -109,7 +105,7 @@ class _FlutterTableViewState extends State<FlutterTableView> {
 
       offsetY += sectionHeight;
 
-      int sectionWidgetCount = sectionHeader == null ? rowCount : rowCount + 1;
+      int sectionWidgetCount = widget.sectionHeaderBuilder == null ? rowCount : rowCount + 1;
       sectionTotalWidgetCountList.add(sectionWidgetCount);
       this.totalItemCount += sectionWidgetCount;
 
@@ -174,14 +170,14 @@ class _FlutterTableViewState extends State<FlutterTableView> {
       cacheExtent: this.widget.cacheExtent,
       itemBuilder: (BuildContext context, int index) {
         Widget itemWidget;
-        RowSectionModel model = this._getRowSectionModel(index);
+        RowSectionModel? model = this._getRowSectionModel(index);
         double height;
-        if (model.row == 0 && model.haveHeaderWidget) {
-          itemWidget = this.sectionHeaderList[model.section].headerWidget;
-          height = this.widget.sectionHeaderHeight(context, model.section);
+        if (model?.row == 0 && model?.haveHeaderWidget == true) {
+          itemWidget = this.sectionHeaderList[model!.section].headerWidget;
+          height = widget.sectionHeaderHeight(context, model.section);
         } else {
-          int row = model.haveHeaderWidget == false ? model.row : model.row - 1;
-          itemWidget = this.widget.cellBuilder(context, model.section, row);
+          int row = model?.haveHeaderWidget == false ? model!.row : model!.row - 1;
+          itemWidget = widget.cellBuilder!(context, model.section, row);
           height = this.widget.cellHeight(context, model.section, row);
         }
 
@@ -197,14 +193,10 @@ class _FlutterTableViewState extends State<FlutterTableView> {
     );
   }
 
-  ////////////////////////////////////////////////////////////////////
-  //                      tool function
-  ////////////////////////////////////////////////////////////////////
+  // 获取 Row 模型，暂时看不懂
   RowSectionModel? _getRowSectionModel(int index) {
     int passCount = 0;
-    for (int section = 0;
-        section < this.sectionTotalWidgetCountList.length;
-        section++) {
+    for (int section = 0; section < widget.sectionCount; section++) {
       int currentSectionWidgetCount = this.sectionTotalWidgetCountList[section];
       if (index >= passCount && index < passCount + currentSectionWidgetCount) {
         int row = index - passCount;
@@ -265,16 +257,15 @@ class _FlutterTableViewState extends State<FlutterTableView> {
   @override
   Widget build(BuildContext context) {
     this._createListView();
-    Widget listViewFatherWidget;
-    if (this.widget.listViewFatherWidgetBuilder != null) {
-      listViewFatherWidget =
-          this.widget.listViewFatherWidgetBuilder(context, this.listView);
+    Widget? listViewFatherWidget; 
+    if (widget.listViewFatherWidgetBuilder != null) {
+      listViewFatherWidget = widget.listViewFatherWidgetBuilder!(context, this.listView);
     }
 
     Widget listViewWidget = listViewFatherWidget ?? this.listView;
 
     if (this.currentHeaderModel != null &&
-        this.currentHeaderModel.headerWidget != null) {
+        this.currentHeaderModel?.headerWidget != null) {
       return Container(
         padding: this.widget.padding,
         color: widget.backgroundColor,
@@ -285,13 +276,13 @@ class _FlutterTableViewState extends State<FlutterTableView> {
               child: listViewWidget,
             ),
             Positioned(
-              top: this.currentHeaderModel.topOffset,
+              top: this.currentHeaderModel?.topOffset,
               left: 0.0,
               right: 0.0,
-              height: this.currentHeaderModel.height,
+              height: this.currentHeaderModel?.height,
               child: Container(
                 color: Colors.white,
-                child: this.currentHeaderModel.headerWidget,
+                child: this.currentHeaderModel?.headerWidget,
               ),
             ),
           ],
@@ -333,14 +324,14 @@ class SectionHeaderModel {
   final double sectionMaxY;
   final double height;
   final int section;
-  final Widget? headerWidget;
+  final Widget headerWidget;
 
   SectionHeaderModel({
     required this.y,
     required this.sectionMaxY,
     required this.height,
     required this.section,
-    this.headerWidget,
+    required this.headerWidget,
   });
 
   double topOffset = 0;
