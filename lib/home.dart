@@ -70,23 +70,21 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onItemTapped,
       ),
       body: Center(
-        child: BGListView(
-          listData: entries,
-          enablePulldown: true,
-          enablePullup: true,
-          onRefresh: _onRefresh,
-          onLoad: _onload,
-          itemBuilder: (BuildContext context, int index) {
-            print(index);
-            return ListTile(
-              leading: Icon(Icons.book), // 左边Icon
-              title: Text('Entry ${entries[index]}'), // 主标题
-              trailing: Icon(Icons.arrow_right), // 右边Icon
-            );
-          },
-          didClickItem: didClickItem
-        )
-      ),
+          child: BGListView(
+              listData: entries,
+              enablePulldown: true,
+              enablePullup: true,
+              onRefresh: _onRefresh,
+              onLoad: _onload,
+              itemBuilder: (BuildContext context, int index) {
+                print(index);
+                return ListTile(
+                  leading: Icon(Icons.book), // 左边Icon
+                  title: Text('Entry ${entries[index]}'), // 主标题
+                  trailing: Icon(Icons.arrow_right), // 右边Icon
+                );
+              },
+              didClickItem: didClickItem)),
     );
   }
 
@@ -98,18 +96,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Future _onload() async {
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    entries.add((entries.length+1).toString());
-    if(mounted)
-    setState(() {
-
-    });
+    entries.add((entries.length + 1).toString());
+    if (mounted) setState(() {});
   }
 
   void didClickItem(int index) {
     switch (index) {
       case 0:
         // 牌杀小游戏
-        Navigator.pushNamed(context, 'miniGame');
+        Navigator.pushNamed(context, 'miniGame',
+            arguments: {'title': "命令路由传递过来的title"});
         break;
       case 1:
         // Layout
@@ -132,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // BottomSheet
         Navigator.pushNamed(context, 'SliverDemo');
         // BGBottomSheet.showGlobalBottomSheet(
-        //   context: context, 
+        //   context: context,
         //   listData: entries,
         //   itemBuilder: (BuildContext context, int index) {
         //     return ListTile(

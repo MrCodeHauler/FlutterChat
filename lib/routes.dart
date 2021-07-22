@@ -36,7 +36,7 @@ class BGRoute {
     "ButtonDemo": (context) => ButtonDemo(),
     'SliverDemo': (context) => SimpleDemoPageBody(),
     // Dialog
-    // "TestDialogPage": (context) => 
+    // "TestDialogPage": (context) =>
   };
 }
 
