@@ -1,9 +1,13 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hello_world/home.dart';
 import 'package:hello_world/routes.dart';
 
 void main() {
+  double a = 0.29 * 100;
+  double b = NumUtil.multiply(0.29, 100);
+  print('结果 $a, $b');
   runApp(MyApp());
 }
 

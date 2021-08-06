@@ -23,6 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
     'ListView',
     'Button',
     'Sliver',
+    'Text',
     'Dialog',
     'BottomSheet',
     'ImagePicker',
@@ -138,6 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
         //     );
         //   }
         // );
+        break;
+      case 6:
+        print(index);
+        Navigator.pushNamed(context, 'TextDemoPage');
         break;
       default:
         break;

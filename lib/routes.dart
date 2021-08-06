@@ -9,6 +9,7 @@ import 'package:hello_world/pages/school/layoutListPage.dart';
 import 'package:hello_world/pages/school/miniGame.dart';
 import 'package:hello_world/pages/school/sliverDemoPage.dart';
 import 'package:hello_world/pages/school/tableViewDemoPage.dart';
+import 'package:hello_world/pages/school/textDemoPage.dart';
 import 'package:hello_world/state/manageByParent.dart';
 import 'package:hello_world/state/manageBySelf.dart';
 import 'package:hello_world/state/manageByMixed.dart';
@@ -35,6 +36,7 @@ class BGRoute {
     // button
     "ButtonDemo": (context) => ButtonDemo(),
     'SliverDemo': (context) => SimpleDemoPageBody(),
+    'TextDemoPage': (context) => TextDemoPage(),
     // Dialog
     // "TestDialogPage": (context) =>
   };
